@@ -6,6 +6,8 @@ var data = new Schema({
 	age: Number,
 	password: String,
 	email: String,
+	treasures:[],
+	last_treasure: Date
 },{collection:"users"});
 
 module.exports = model("users",data);
