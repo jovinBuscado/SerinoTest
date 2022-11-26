@@ -21,31 +21,33 @@ const findTreasure = (filter) => {
         }
     });
     // check the filter if it has prize value data
+    query.push({
+        $unwind: "$values"
+    });
+
     if(filter.prize_value){
-        query.push({
-            $unwind: "$values"
-        });
         // get only the data that matched the condition
         query.push({
             $match:{"values.amount":{$gte:filter.prize_value[0],$lte:filter.prize_value[1]}}
         });
-        query.push({
-            $group: {
-                _id:"$_id",
-                id:{$first:"$id"},
-                longitude:{$first:"$longitude"},
-                latitude:{$first:"$latitude"},
-                name:{$first:"$name"},
-                values:{ "$push": "$values" },
-            }
-        });
-        query.push({$sort:{id:1}});
     }
 
     // get only the data that matched the condition
     query.push({
         $match:{"values.found":0}
     });
+    
+    query.push({
+        $group: {
+            _id:"$_id",
+            id:{$first:"$id"},
+            longitude:{$first:"$longitude"},
+            latitude:{$first:"$latitude"},
+            name:{$first:"$name"},
+            values:{ "$push": "$values" },
+        }
+    });
+    query.push({$sort:{id:1}});
 
     // push the default data to be used for calculating the distance between the two coordinates
     query.push({
