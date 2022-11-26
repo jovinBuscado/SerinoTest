@@ -1,6 +1,11 @@
 # SerinoTest
 For serino technical test
 
+Create an algorith to automatically populate the database, search for treasure by coordinate, distance and prize value. the distance calculation was taken from [http://www.movable-type.co.uk/scripts/latlong.html](http://www.movable-type.co.uk/scripts/latlong.html, it uses the ‘**haversine**’ formula to calculate the great-circle distance between two points. cross checked with other online distance calculator for coordinates and the result is correct.
+
+This system uses [expressJS](https://expressjs.com/) as framework, [mongoDB Community Server](https://www.mongodb.com/) as the database and [mongoose](https://mongoosejs.com/) as the ODM library for mongoDB.
+
+
 ## Download and execute [mongoDB](https://www.mongodb.com/try/download/community)
 
 ### Or check [MongoDB installation Tutorials](https://www.mongodb.com/docs/manual/installation/#mongodb-installation-tutorials)
@@ -20,4 +25,47 @@ For serino technical test
     ![Check Database Image](img/check.JPG)
 
 
-Distance calculation taken from http://www.movable-type.co.uk/scripts/latlong.html
+## Execute The System
+
+1. [Download And Execute MongoDB server](#download-and-execute-mongodb)
+2. Open command prompt and goto to system location(`C:\Mine\basic\serinoTest`)
+    ![System Files Image](img/serinoTest.JPG)
+3. To populate data execute command `npm run populate`, to automatically populate database with the given sample
+    ![Populate Database Image](img/populate.JPG)
+4. To start the system execute command `npm start`(*the system url will be [localhost:3000](http://localhost:3000)*)
+    ![Start System Image](img/start.JPG)
+
+
+## Routes Available in the System Example
+
+### Request
+
+`GET localhost:3000/nearMe?latitude=14.552036595352455&longitude=121.01696118771324&distance=1`
+
+    {
+        latitude:14.552036595352455,
+        longitude:121.01696118771324,
+        distance:1 //accepts only 1 or 10 as the value
+    }
+
+### Response
+
+    [
+        {
+            "_id": "6381bcb3a1b8fa2599be2926",
+            "id": 100,
+            "latitude": 14.54376481,
+            "longitude": 121.0199117,
+            "name": "T1"
+        },
+        {
+            "_id": "6381bcb3a1b8fa2599be2928",
+            "id": 102,
+            "latitude": 14.54464357,
+            "longitude": 121.0203656,
+            "name": "T3"
+        }
+    ]
+    
+![First Request Image](img/request1.JPG)
+
