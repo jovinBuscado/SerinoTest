@@ -118,7 +118,7 @@ app.post("/treasureHunt",(req,res)=>{
         res.status(400).json({message:"Data Error."});
         return;
     } else {
-        body.prize_value = "10-30";
+        body.prize_value = [10,30];
     }
 
     // check if the required data is in the query
