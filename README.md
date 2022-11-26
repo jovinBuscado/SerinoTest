@@ -66,6 +66,49 @@ This system uses [expressJS](https://expressjs.com/) as framework, [mongoDB Comm
             "name": "T3"
         }
     ]
-    
+
 ![First Request Image](img/request1.JPG)
 
+
+### Request
+
+`GET localhost:3000/nearMe?latitude=14.552036595352455&longitude=121.01696118771324&distance=1&prize_value=10-30`
+
+    {
+        latitude:14.552036595352455,
+        longitude:121.01696118771324,
+        distance:1, //accepts only 1 or 10 as the value
+        prize_value:10-30 //optional parameter. accepts only range from 10-30 and strictly no decimal value
+    }
+
+### Response
+    [
+        {
+            "_id": "6381bcb3a1b8fa2599be2926",
+            "id": 100,
+            "latitude": 14.54376481,
+            "longitude": 121.0199117,
+            "name": "T1",
+            "value": {
+            "_id": "6381bcb3a1b8fa2599be2943",
+            "treasure_id": 100,
+            "amount": 15,
+            "__v": 0
+            }
+        },
+        {
+            "_id": "6381bcb3a1b8fa2599be2928",
+            "id": 102,
+            "latitude": 14.54464357,
+            "longitude": 121.0203656,
+            "name": "T3",
+            "value": {
+            "_id": "6381bcb3a1b8fa2599be2945",
+            "treasure_id": 102,
+            "amount": 15,
+            "__v": 0
+            }
+        }
+    ]
+
+![Second Request Image](img/request2.JPG)

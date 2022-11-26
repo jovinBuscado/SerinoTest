@@ -150,6 +150,12 @@ const findTreasure = (filter) => {
             if(err){
                 rej(err);
             } else {
+                result = result.map((data)=>{
+                    let value = data.values.reduce((prev,current)=> prev.amount>current.amount ? current : prev);
+                    delete data.values;
+                    data.value = value;
+                    return data;
+                })
                 res(result);
             }
         });
