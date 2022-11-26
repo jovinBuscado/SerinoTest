@@ -38,7 +38,7 @@ This system uses [expressJS](https://expressjs.com/) as framework, [mongoDB Comm
 
 ## Routes Available in the System Example
 
-### Request
+### Request(Example #1)
 
 `GET localhost:3000/nearMe?latitude=14.552036595352455&longitude=121.01696118771324&distance=1`
 
@@ -70,7 +70,7 @@ This system uses [expressJS](https://expressjs.com/) as framework, [mongoDB Comm
 ![First Request Image](img/request1.JPG)
 
 
-### Request
+### Request(Example #2)
 
 `GET localhost:3000/nearMe?latitude=14.552036595352455&longitude=121.01696118771324&distance=1&prize_value=10-30`
 
