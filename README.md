@@ -42,6 +42,7 @@ This system uses [nodeJS](https://nodejs.org/en/) as the runtime environment, [e
 
 `GET localhost:3000/nearMe?latitude=14.552036595352455&longitude=121.01696118771324&distance=1`
 
+    Query Parameters:
     {
         latitude:14.552036595352455,
         longitude:121.01696118771324,
@@ -74,6 +75,7 @@ This system uses [nodeJS](https://nodejs.org/en/) as the runtime environment, [e
 
 `GET localhost:3000/nearMe?latitude=14.552036595352455&longitude=121.01696118771324&distance=1&prize_value=10-30`
 
+    Query Parameters:
     {
         latitude:14.552036595352455,
         longitude:121.01696118771324,
