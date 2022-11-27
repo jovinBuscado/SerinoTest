@@ -1,7 +1,7 @@
 # SerinoTest
 For serino technical test
 
-Create an algorith to automatically populate the database, search for treasure by coordinate, distance and prize value. the distance calculation was taken from [http://www.movable-type.co.uk/scripts/latlong.html](http://www.movable-type.co.uk/scripts/latlong.html, it uses the ‘**haversine**’ formula to calculate the great-circle distance between two points. cross checked with other online distance calculator for coordinates and the result is correct.
+Create an algorith to automatically populate the database, search for treasure by coordinate, distance and prize value. the distance calculation was taken from [http://www.movable-type.co.uk/scripts/latlong.html](http://www.movable-type.co.uk/scripts/latlong.html), it uses the ‘**haversine**’ formula to calculate the great-circle distance between two points. cross checked with other online distance calculator for coordinates and the result is correct.
 
 This system uses [nodeJS](https://nodejs.org/en/) as the runtime environment, [expressJS](https://expressjs.com/) as the framework, [mongoDB Community Server](https://www.mongodb.com/) as the database and [mongoose](https://mongoosejs.com/) as the ODM library for mongoDB.
 
