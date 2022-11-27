@@ -24,13 +24,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use('*',cors());
 
+// middleware for user-key authentication
 app.use(function(req,res,next){
     var p = req._parsedUrl.path
     p = p.replace(/\?.*/,"");
-    if(['/login','/nearMe'].indexOf(p.replace(/(^\/.*[nearMe||login]).*/,'$1')) >= 0){
+    if(['/login','/nearMe'].indexOf(p.replace(/(^\/.*[nearMe||login]).*/,'$1')) >= 0){ //allowed URLs without a user-key
         next();
     } else {
-        // console.log(encrypt.setText(req.get("user-key")).decrypt());
         if([null,undefined,"",''].indexOf(req.get("user-key")) >= 0){
             res.status(404).send("<h1>Page Not Found</h1>");
         } else {
@@ -42,11 +42,15 @@ app.use(function(req,res,next){
         }
     }
 });
+
+//login route
 app.post("/login",(req,res)=>{
 	let body = req.body;
 	let allow = true;
+
+    //trap for insufficient request body
 	if(body.password){
-		body.password = crypto.createHash('md5').update(body.password).digest("hex");
+		body.password = crypto.createHash('md5').update(body.password).digest("hex"); // encrypt password
 	} else {
 		allow = false;
 		res.status(400).send("<h1>The request was invalid.</h1>");
@@ -55,17 +59,22 @@ app.post("/login",(req,res)=>{
 		allow = false;
 		res.status(400).send("<h1>The request was invalid.</h1>");
 	}
+
+    //proceed if data is complete
 	if(allow) {	
 		let data = {
 			"password":body.password,
 			"email":body.email,
 		}
 
+        //get user data
 		helper.getUser(data)
 		.then(function(result){
 			let min = 1;
 			let max = 999999;
 			encrypt.setText(false);
+            
+            //generate key unique everytime
 			let key = encrypt.setEncryptData({
 				u:body.email,
 				p:body.password,
@@ -74,7 +83,6 @@ app.post("/login",(req,res)=>{
 			}).encrypt()
 			if(result.length){
 				res.json({key});
-				// res.json({data:result,key});
 			} else {
 				res.status(200).send("<h1>User Not Found.</h1>");
 			}
@@ -85,8 +93,10 @@ app.post("/login",(req,res)=>{
 	}
 })
 
+//get current user data
 app.get("/user",(req,res)=>{
-    let user = encrypt.setText(req.get("user-key")).decrypt();
+    let user = encrypt.setText(req.get("user-key")).decrypt();//decode user-key taken from request header
+    //get user data
     helper.getUser({email:user.u,password:user.p})
     .then(function(result){
         res.json(result);
@@ -95,11 +105,13 @@ app.get("/user",(req,res)=>{
         res.json(err);
     })
 })
+
+//treasure hunting route
 app.post("/treasureHunt",(req,res)=>{
-    let user = encrypt.setText(req.get("user-key")).decrypt();
+    let user = encrypt.setText(req.get("user-key")).decrypt(); //decode user-key taken from request header
     let body = req.body;
 
-    // convert params from string to Float, and split prize value if available
+    // convert params from string to float, and split prize value if available
     for(var i in body){
         if(i === "prize_value"){
             body[i] = body[i].split("-").map((val)=>parseFloat(val));

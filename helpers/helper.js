@@ -190,6 +190,8 @@ const findTreasure = (filter) => {
         });
     })
 }
+
+// pull user data
 const getUser = (query = {},password=false)=>{
     return new Promise((res,rej)=>{
         let collection = [];
@@ -209,8 +211,13 @@ const getUser = (query = {},password=false)=>{
         })
     });
 }
+
+// get treasure algorithm
+// 5 Minute cooldown every treasure search
 const getTreasure = (query)=>{
     return new Promise((res,rej)=>{
+        
+        // validate if user exists
         models.users.findOne({email:query.email,password:query.password}).exec(function(error,result){
             if(error){
                 rej(error);
@@ -218,6 +225,8 @@ const getTreasure = (query)=>{
                 let last_treasure = new Date(result.last_treasure);
                 let now = new Date();
                 now.setMinutes(now.getMinutes()-5);
+
+                // check if the user is still on cooldown time
                 if(now.getTime() < last_treasure.getTime()){
                     // get total seconds between the times
                     let diff = Math.abs(last_treasure - now) / 1000;
@@ -229,12 +238,17 @@ const getTreasure = (query)=>{
                     // what's left is seconds
                     let seconds = Math.round(diff % 60);  // in theory the modulus is not required
                     
+                    // return cooldown message
                     res({message:`${minutes} Minute(s) and ${seconds} Second(s) left until next treasure hunt.`});
                 } else {
+                    
+                    // get treasure near the user coordinates
                     findTreasure(query)
                     .then((treasures)=>{
+                        // pick random treasure that is found within user search
                         let pickRandomTreasure = Math.floor(Math.random() * (treasures.length - 1 + 1));
                         
+                        // user data to be updated
                         result.last_treasure = new Date();
                         let treasureFound = false;
                         if(treasures[pickRandomTreasure]){
@@ -242,10 +256,13 @@ const getTreasure = (query)=>{
                             result.treasures.push(treasures[pickRandomTreasure]);
                         }
                         
+                        // save user data
                         result.save(async (error,result)=>{
                             if(error){
                                 rej(error);
                             } else {
+
+                                // try again message
                                 let response = {
                                     message:`No Treasure Found, Please Try Again Later. Treasure hunting will be available after 5 Minutes.`,
                                     data:{
@@ -256,10 +273,13 @@ const getTreasure = (query)=>{
                                         foundTreasure:{}
                                     }
                                 };
+                                // if treasure is found 
                                 if(treasureFound){
                                     const filter = { _id: Types.ObjectId(treasures[pickRandomTreasure].value._id) };
                 
-                                    await models.money_values.findOneAndUpdate(filter, {found:1});
+                                    await models.money_values.findOneAndUpdate(filter, {found:1}); //update treasure money_values data after treasure is found
+
+                                    //congratulations message
                                     response = {
                                         message:`Congratulations User ${result.name}, you found treasure ${treasures[pickRandomTreasure].name} with the amount of $${treasures[pickRandomTreasure].value.amount}. Treasure hunting will be available after 5 Minutes.`,
                                         data:{
