@@ -30,9 +30,10 @@ This system uses [nodeJS](https://nodejs.org/en/) as the runtime environment, [e
 1. [Download And Execute MongoDB server](#download-and-execute-mongodb)
 2. Open command prompt and goto to system location(`C:\Mine\basic\serinoTest`)
     ![System Files Image](img/serinoTest.JPG)
-3. To populate data execute command `npm run populate`, to automatically populate database with the given sample
+3. Execute Command `npm install`
+4. To populate data execute command `npm run populate`, to automatically populate database with the given sample
     ![Populate Database Image](img/populate.JPG)
-4. To start the system execute command `npm start`(*the system url will be [localhost:3000](http://localhost:3000)*)
+5. To start the system execute command `npm start`(*the system url will be [localhost:3000](http://localhost:3000)*)
     ![Start System Image](img/start.JPG)
 
 
